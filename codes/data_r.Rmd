@@ -1,0 +1,68 @@
+---
+title: "Visualisation"
+author: "Mehdi Fellat"
+date: "5 janvier 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+
+
+setwd("C:/Users/Mehdi/Desktop/M1/Visualisation/code")
+```
+
+
+
+```{r cars}
+data_selected <- read.table("C:/Users/Mehdi/Desktop/M1/Visualisation/data/data_R_clean.txt", header = TRUE, sep = "\t",encoding = 'latin-1')
+summary(data_selected)
+```
+
+
+```{r pressure, echo=FALSE}
+names(data_selected) = c("Annee_de_financement","Date_de_debut","Duree_en_mois","Montant")
+library('corrplot')
+R<-cor(data_selected)
+corrplot(R,"circle")
+```
+
+```{r}
+plot(Duree_en_mois ~ Montant, data = data_selected)
+```
+```{r}
+plot(Montant ~ Annee_de_financement,data = data_selected)
+```
+
+
+```{r}
+x = data.frame("Annee" = 2006:2015,"Montant" = c(582368170,551626061,625335062,577608595,608007627,535750866,531746052,417273452,392975243,361794575))
+
+library(ggplot)
+ggplot(x,aes(x=Annee,y=Montant))
+```
+
+
+```{r}
+montant = c(582368170,551626061,625335062,577608595,608007627,535750866,531746052,417273452,392975243,361794575)
+names(montant) = c(2006,2007,2008,2009,2010,2011,2012,2013,2014,2015)
+barplot(montant,col=c(1,2,3,4,5,6,7,8,9,10),xlab="Année", ylab="Montant", main="Argent financé par l'ANR entre 2006 et 2015" )
+```
+
+```{r}
+nb_projet = c(1579,1420,1318,1315,1361,1286,1282,1084,1077,927)
+names(nb_projet) = c(2006,2007,2008,2009,2010,2011,2012,2013,2014,2015)
+barplot(nb_projet,col=rgb(0.5,0.1,0.6,0.6),xlab="Année",ylab="Nombre de projets", main="Nombre de projets financé par l'ANR entre 2006 et 2015" )
+```
+
+```{r}
+library(RODBC)
+require(RODBC)
+library(googleVis)
+require(googleVis)
+
+data_sankey <- read.table("C:/Users/Mehdi/Desktop/M1/Visualisation/data/sankey_final.txt", header = TRUE, sep = "\t",encoding = 'utf-8')
+
+plot(gvisSankey(data_sankey, from = 'Ville', to ='Domaine', weight = 'Nombre'))
+
+```
+
